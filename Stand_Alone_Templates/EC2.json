@@ -1,0 +1,23 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+  "Parameters" : {
+    "EC2KeyPairChoice": {
+      "Description": "Key to Use with EC2",
+      "Type": "String",
+      "Default": "MyEC2KeyCloudForm",
+      "AllowedValues" : ["MyEC2KeyCloudForm", "MyEC2KeyPair"],
+      "Description" : "Enter MyEC2KeyCloudForm or MyEC2KeyPair. Default is MyEC2KeyCloudForm."
+    }
+  },
+  "Resources" : {
+    "MyEC2Instance" :{
+      "Type" : "AWS::EC2::Instance",
+      "Properties" : {
+        "ImageId" : "ami-1a7f6d7e",
+        "AvailabilityZone" : "eu-west-2a",
+        "KeyPair" : {"Ref" : "EC2KeyPairChoice"},
+        "InstanceType" : "t2.micro"
+      }
+    }
+  }
+}

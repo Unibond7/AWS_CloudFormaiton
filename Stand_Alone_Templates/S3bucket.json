@@ -4,7 +4,7 @@
         "BucketName": {
           "Description": "Name of MyS3Bucket",
           "Type": "String",
-          "Default": "tims3bucket_createdwithcloudformation"
+          "Default": "tims3bucketcreatedwithcloudformation"
         }
       },
       "Resources" : {

@@ -19,5 +19,11 @@
         "InstanceType" : "t2.micro"
       }
     }
+  },
+  "Outputs" : {
+    "EC2KeyUsed" : {
+      "Value" : {"Ref" : "KeyPair"},
+      "Description" : "KeyPair used for EC2 created"
+    }
   }
 }

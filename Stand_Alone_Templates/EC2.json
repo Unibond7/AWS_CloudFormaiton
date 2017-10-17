@@ -22,7 +22,7 @@
   },
   "Outputs" : {
     "EC2KeyUsed" : {
-      "Value" : {"Ref" : "MyEC2Instance"},
+      "Value" : { "Fn::GetAtt" : [ "MyEC2Instance", "KeyName" ]},
       "Description" : "KeyPair used for EC2 created"
     }
   }

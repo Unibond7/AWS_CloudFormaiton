@@ -1,0 +1,20 @@
+{
+  "Resources" : {
+    "S3Only" : {
+      "Type" : "AWS::IAM::Policy",
+      "Properties" : {
+        "PolicyName" : "S3Priviligies",
+        "PolicyDocument" : {
+          "Version" : "2012-10-17",
+          "Statement" : [
+            {
+              "Effect" : "Allow",
+              "Action" : "S3:*",
+              "Resource" : "*"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

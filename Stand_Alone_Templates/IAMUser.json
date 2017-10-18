@@ -1,43 +1,47 @@
 {
   "Parameters" : {
     "MyUserName" : {
-      "Descfription" : "Using the recommended format for user name",
+      "Description" : "Using the recommended format for user name",
       "Type" : "String",
       "Default" : "Tim",
       "AllowedValues" : [ "Tim" , "Ruby", "Joe" ]
     }
   },
-  "MyAccessKey" : {
-   "Type" : "AWS::IAM::AccessKey",
-   "Properties" : {
-      "UserName" : { "Ref" : "MyUserName" }
-    }
-  },
-  "itsameuser" : {
-    "Type" : "AWS::IAM::User",
-    "Properties" : {
-      "UserName" : {"Fn::Join": ["", [{"Ref": "AWS::Region"}, {"Ref": "MyUserName"}]]},
-      "Policies" : [ {
-        "PolicyName" : "prettymuchroot",
-        "PolicyDocument" : {
-          "Version" : "2012-10-17",
-          "Statement" : [
-            {
-              "Effect" : "Allow",
-              "Action" : "*",
-              "Resource" : "*"
-            }
-          ]
-        }
-      } ]
+  "Resources" : {
+    "itsameuser" : {
+      "Type" : "AWS::IAM::User",
+      "Properties" : {
+        "UserName" : {"Fn::Join": ["", [{"Ref": "AWS::Region"}, "-", {"Ref": "MyUserName"}]]},
+        "Policies" : [ {
+          "PolicyName" : "prettymuchroot",
+          "PolicyDocument" : {
+            "Version" : "2012-10-17",
+            "Statement" : [
+              {
+                "Effect" : "Allow",
+                "Action" : "*",
+                "Resource" : "*"
+              }
+            ]
+          }
+        } ]
+      }
+    },
+    "MyAccessKey" : {
+     "Type" : "AWS::IAM::AccessKey",
+     "Properties" : {
+        "UserName" : { "Ref" : "itsameuser" }
+      }
     }
   },
   "Outputs" : {
-  "MyAccessKeyId": {
-    "Ref" : "MyAccessKey"
+    "MyAccessKeyId": {
+      "Value" : { "Ref" : "MyAccessKey" }
     },
-  "MySecretKey": {
-    "Fn::GetAtt": [ "MyAccessKey", "SecretAccessKey" ]
+    "MySecretKey": {
+      "Value" : {
+        "Fn::GetAtt": [ "MyAccessKey", "SecretAccessKey" ]
+      }
     }
   }
 }

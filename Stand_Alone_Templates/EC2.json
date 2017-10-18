@@ -2,7 +2,6 @@
   "AWSTemplateFormatVersion" : "2010-09-09",
   "Parameters" : {
     "InstanceChoice": {
-      "Description": "Instance to use with EC2",
       "Type": "String",
       "Default": "t2.micro",
       "AllowedValues" : [ "t2.micro" , "c4.8xlarge" ],

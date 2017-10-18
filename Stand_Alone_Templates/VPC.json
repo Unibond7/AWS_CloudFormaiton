@@ -7,7 +7,7 @@
     	      "EnableDnsSupport" : "true",
     	      "EnableDnsHostnames" : "true",
             "Tags" : [
-              { "Key" : "Name", "Value" : { "Fn::Join" : ["", { "Ref" :  "AWS::StackName" }, "-VPC" ] } }
+              { "Key" : "Name", "Value" : { "Fn::Join" : ["", [{ "Ref" :  "AWS::StackName" }, "-VPC" ]] } }
             ]
          }
       }

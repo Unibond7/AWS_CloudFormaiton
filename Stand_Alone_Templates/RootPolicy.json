@@ -13,8 +13,9 @@
               "Resource" : "*"
             }
           ]
-        }
+        },
+        "Users" : [ "eu-west-2-Tim" ]
       }
-    },
+    }
   }
 }

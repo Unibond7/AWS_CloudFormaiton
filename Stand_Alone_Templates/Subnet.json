@@ -4,7 +4,7 @@
        "Type" : "AWS::EC2::Subnet",
        "Properties" : {
          "CidrBlock" : "10.0.0.0/24",
-         "VpcId" : "MySimpleVPC-VPC",
+         "VpcId" : "vpc-2ae9a743",
          "AvailabilityZone" : "eu-west-2a",
          "MapPublicIpOnLaunch" : "false"
        }

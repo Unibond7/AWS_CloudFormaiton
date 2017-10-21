@@ -4,4 +4,4 @@ The flow of traffic is routed via a Router according to the Route Tables
 
 A diagram of the intended VPC is shown below
 
-![VPC](/Images/AWS_VPC.png?raw=true "My VPC")
+![VPC](https://github.com/Unibond7/AWS_CloudFormaiton/blob/master/MyVPC/Images/AWS_VPC.png)

@@ -101,14 +101,5 @@
         "RouteTableId" : { "Ref" : "RouteTablePrivate" }
       }
     },
-    "MyEC2Instance" :{
-      "Type" : "AWS::EC2::Instance",
-      "Properties" : {
-        "ImageId" : "ami-1a7f6d7e",
-        "AvailabilityZone" : "eu-west-2a",
-        "KeyName" : "MyEC2KeyCloudForm",
-        "InstanceType" : { "Ref" : "InstanceChoice" }
-      }
-    },
   }
 }

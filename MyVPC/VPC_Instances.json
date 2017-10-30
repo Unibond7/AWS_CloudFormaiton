@@ -1,0 +1,55 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+  "Mappings" : {
+    "InstanceIDs" : {
+      "t2.micro" : "ami-1a7f6d7e"
+    }
+  },
+  "Parameters" : {
+    "VPCID" : {
+      "Type" : "AWS::EC2::VPC::Id",
+      "Description" : "Select Virtual Private Cloud ID"
+    },
+    "PublicSubnet" : {
+      "Type" : "List<AWS::EC2::Subnet::Id>",
+      "Description" : "Subnet for Public Instance"
+    },
+    "PrivateSubnet" : {
+      "Type" : "List<AWS::EC2::Subnet::Id>",
+      "Description" : "Subnet for Private Instance"
+    }
+  },
+  "Resources" : {
+    "PublicEC2Instance" :{
+      "Type" : "AWS::EC2::Instance",
+      "Properties" : {
+        "AvailabilityZone" : { "Fn::GetAtt" : [ "PublicSubnet", "AvailabilityZone" ] } ,
+        "KeyName" : "MyEC2KeyCloudForm",
+        "InstanceType" : "t2.micro",
+        "ImageId" : { "Fn::FindInMap" : [ "InstanceIDs" , "t2.micro" ] }
+      }
+    },
+    "PrivateEC2Instance" :{
+      "Type" : "AWS::EC2::Instance",
+      "Properties" : {
+        "AvailabilityZone" : { "Fn::GetAtt" : [ "PrivateSubnet", "AvailabilityZone" ] } ,
+        "KeyName" : "MyEC2KeyCloudForm",
+        "InstanceType" : "t2.micro",
+        "ImageId" : { "Fn::FindInMap" : [ "InstanceIDs" , "t2.micro" ] }
+      }
+    },
+    "PublicSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Enable inbound network access to Public Instance.",
+        "VpcId": { "Ref": "VPCID" },
+        "SecurityGroupIngress": [
+          {"ToPort": "80", "IpProtocol": "tcp", "FromPort": "80", "CidrIp": "0.0.0.0/0"}
+        ],
+        "Tags" : [
+          { "Key": "Name", "Value": { "Fn::Join" : ["", [{ "Ref" : "AWS::StackName" }, "-PublicSG"]] } }
+        ]
+      }
+    },
+  }
+}

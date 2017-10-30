@@ -1,12 +1,11 @@
 {
+  "AWSTemplateFormatVersion" : "2010-09-09",
   "Mappings" : {
     "SubnetCidrs" : {
       "PublicSubnet" : "10.0.1.0/24",
       "PrivateSubnet" : "10.0.2.0/24"
     }
-  }
-}
-{
+  },
   "Resources" : {
     "BaseVPC" : {
       "Type" : "AWS::EC2::VPC",

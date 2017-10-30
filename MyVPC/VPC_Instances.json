@@ -17,25 +17,49 @@
     "PrivateSubnet" : {
       "Type" : "List<AWS::EC2::Subnet::Id>",
       "Description" : "Subnet for Private Instance"
+    },
+    "SSHLocation" : {
+      "Description" : "The IP address range that can be used to SSH to the EC2 instances",
+      "Type": "String",
+      "MinLength": "9",
+      "MaxLength": "18",
+      "Default": "0.0.0.0/0",
+      "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+      "ConstraintDescription": "Must be a valid IP CIDR range of the form x.x.x.x/x"
     }
   },
   "Resources" : {
     "PublicEC2Instance" :{
       "Type" : "AWS::EC2::Instance",
       "Properties" : {
-        "AvailabilityZone" : { "Fn::GetAtt" : [ "PublicSubnet", "AvailabilityZone" ] } ,
+        "AvailabilityZone" : { "Fn::GetAtt" : [ "PublicSubnet", "AvailabilityZone" ] },
+        "SecurityGroups" : "PublicSecurityGroup",
         "KeyName" : "MyEC2KeyCloudForm",
         "InstanceType" : "t2.micro",
-        "ImageId" : { "Fn::FindInMap" : [ "InstanceIDs" , "t2.micro" ] }
+        "ImageId" : { "Fn::FindInMap" : [ "InstanceIDs" , "t2.micro" ] },
+        "UserData" : { "Fn::Base64" : { "Fn::Join" : [ "", [
+          "#!/bin/bash",
+          "yum install httpd -y",
+          "yum update -y",
+          "service httpd start",
+          "chkconfig httpd on",
+          "echo '<html><h1>Hello World!</h1></html>' > /var/www/html/index.html"
+          ]]}},
+          "Tags" : [
+          { "Key": "Name", "Value": "MyWebServer" }
+        ]
       }
     },
     "PrivateEC2Instance" :{
       "Type" : "AWS::EC2::Instance",
       "Properties" : {
-        "AvailabilityZone" : { "Fn::GetAtt" : [ "PrivateSubnet", "AvailabilityZone" ] } ,
+        "AvailabilityZone" : { "Fn::GetAtt" : [ "PrivateSubnet", "AvailabilityZone" ] },
         "KeyName" : "MyEC2KeyCloudForm",
         "InstanceType" : "t2.micro",
-        "ImageId" : { "Fn::FindInMap" : [ "InstanceIDs" , "t2.micro" ] }
+        "ImageId" : { "Fn::FindInMap" : [ "InstanceIDs" , "t2.micro" ] },
+        "Tags" : [
+        { "Key": "Name", "Value": "MySQLServer" }
+      ]
       }
     },
     "PublicSecurityGroup": {
@@ -44,12 +68,28 @@
         "GroupDescription": "Enable inbound network access to Public Instance.",
         "VpcId": { "Ref": "VPCID" },
         "SecurityGroupIngress": [
-          {"ToPort": "80", "IpProtocol": "tcp", "FromPort": "80", "CidrIp": "0.0.0.0/0"}
+          {"IpProtocol" : "tcp", "FromPort" : "80", "ToPort" : "80", "CidrIp" : "0.0.0.0/0"},
+          {"IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : { "Ref" : "SSHLocation"}}
         ],
         "Tags" : [
-          { "Key": "Name", "Value": { "Fn::Join" : ["", [{ "Ref" : "AWS::StackName" }, "-PublicSG"]] } }
+          { "Key": "Name", "Value": { "Fn::Join" : ["", [{ "Ref" : "AWS::StackName" }, "-WebDMZ"]] } }
         ]
       }
     },
+    "PrivateSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Enable inbound network access to Public Instance.",
+        "VpcId": { "Ref": "VPCID" },
+        "SecurityGroupIngress": [
+          {"IpProtocol" : "tcp", "FromPort" : "3306", "ToPort" : "3306", "CidrIp" : "10.0.1.0/24"},
+          {"IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : "10.0.1.0/24"},
+          {"IpProtocol" : "icmp", "FromPort" : "0", "ToPort" : "65535", "CidrIp" : "10.0.1.0/24"}
+        ],
+        "Tags" : [
+          { "Key": "Name", "Value": { "Fn::Join" : ["", [{ "Ref" : "AWS::StackName" }, "-RDSSG"]] } }
+        ]
+      }
+    }
   }
 }

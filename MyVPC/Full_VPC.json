@@ -100,5 +100,11 @@
         "RouteTableId" : { "Ref" : "RouteTablePrivate" }
       }
     }
+  },
+  "Outputs": {
+    "VPCID" : { "Value" : { "Ref" : "BaseVPC" } },
+    "SubnetPublic" : { "Value" : { "Ref" : "PublicSubnet"} },
+    "SubnetPrivate" : { "Value" : { "Ref" : "PrivateSubnet"} },
+    "DefaultSG" : { "Value" : { "Fn::GetAtt" : ["BaseVPC", "DefaultSecurityGroup"] }}
   }
 }

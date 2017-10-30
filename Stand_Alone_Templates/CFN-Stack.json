@@ -1,0 +1,37 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+  "Description": "Template for combining all templates into one nested template for testing.",
+  "Parameters": {
+    "VpcURL": {
+      "Type": "String",
+      "Default": "",
+      "Description": "Template URL for VPC Network."
+    },
+    "InstancesURL": {
+      "Type": "String",
+      "Default": "",
+      "Description": "Template URL for Instances."
+    }
+  },
+  "Resources" : {
+    "Vpc" : {
+       "Type" : "AWS::CloudFormation::Stack",
+     	   "Properties" : {
+         "TemplateURL" : { "Ref": "VpcURL" },
+	       }
+    },
+    "Instances" : {
+       "Type" : "AWS::CloudFormation::Stack",
+         "DependsOn" : "Vpc",
+         "Properties" : {
+         "TemplateURL" : { "Ref": "InstancesURL" },
+         "Parameters" :
+          {
+            "VPCID"              : {"Fn::GetAtt": ["Vpc", "Outputs.VPCID"]},
+            "PublicSubnet"       : {"Fn::GetAtt": ["Vpc", "Outputs.SubnetPublic"]},
+            "PrivateSubnet"      : {"Fn::GetAtt": ["Vpc", "Outputs.SubnetPrivate"]}
+          }
+       }
+    }
+  },
+}

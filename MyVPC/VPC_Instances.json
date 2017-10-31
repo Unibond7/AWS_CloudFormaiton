@@ -40,14 +40,14 @@
         "InstanceType" : "t2.micro",
         "ImageId" : "ami-1a7f6d7e",
         "SubnetId" : { "Ref" : "SubnetPublic"},
-		    "UserData" : { "Fn::Base64" : { "Fn::Join" : [ "", [
+	  "UserData" : { "Fn::Base64" : { "Fn::Join" : [ "", [
           "#!/bin/bash\n",
           "yum install httpd -y\n",
           "yum update -y\n",
           "service httpd start\n",
           "chkconfig httpd on\n",
           "echo "<html><h1>Hello World!</h1></html>" > /var/www/html/index.html\n",
-		      "\n"
+	  "\n"
         ]]}},
         "Tags" : [
           { "Key": "Name", "Value": "MyWebServer" }

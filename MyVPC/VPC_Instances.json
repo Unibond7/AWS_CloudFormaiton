@@ -40,14 +40,14 @@
         "InstanceType" : "t2.micro",
         "ImageId" : "ami-1a7f6d7e",
         "SubnetId" : { "Ref" : "SubnetPublic"},
-	  "UserData" : { "Fn::Base64" : { "Fn::Join" : [ "", [
+        "UserData" : { "Fn::Base64" : { "Fn::Join" : [ "", [
           "#!/bin/bash\n",
           "yum install httpd -y\n",
           "yum update -y\n",
           "service httpd start\n",
           "chkconfig httpd on\n",
           "echo '<html><h1>Hello World! This is Tim :)</h1></html>' > /var/www/html/index.html\n",
-	  "\n"
+          "\n"
         ]]}},
         "Tags" : [
           { "Key": "Name", "Value": "MyWebServer" }
@@ -84,7 +84,7 @@
     "PrivateSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "Enable inbound network access to Public Instance.",
+        "GroupDescription": "Enable ports for Private Instance.",
         "VpcId": { "Ref": "VPCID" },
         "SecurityGroupIngress": [
           {"IpProtocol" : "tcp", "FromPort" : "3306", "ToPort" : "3306", "CidrIp" : { "Fn::FindInMap" : [ "VPCRange", "SubnetCidrs", "PublicSubnet"] }},

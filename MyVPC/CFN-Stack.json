@@ -28,8 +28,8 @@
            "Parameters" :
            {
               "VPCID"              : {"Fn::GetAtt": ["Vpc", "Outputs.VPCID"]},
-              "PublicSubnet"       : {"Fn::GetAtt": ["Vpc", "Outputs.SubnetPublic"]},
-              "PrivateSubnet"      : {"Fn::GetAtt": ["Vpc", "Outputs.SubnetPrivate"]}
+              "SubnetPublic"       : {"Fn::GetAtt": ["Vpc", "Outputs.SubnetPublic"]},
+              "SubnetPrivate"      : {"Fn::GetAtt": ["Vpc", "Outputs.SubnetPrivate"]}
             }
           }
         }

@@ -13,6 +13,14 @@
       "Type" : "AWS::EC2::VPC::Id",
       "Description" : "Select Virtual Private Cloud ID"
     },
+    "SubnetPublic" : {
+      "Type" : "AWS::EC2::Subnet::Id",
+      "Description" : "Subnet for WebServer"
+    },
+    "SubnetPrivate" : {
+      "Type" : "AWS::EC2::Subnet::Id",
+      "Description" : "Subnets for RDS"
+    },
     "SSHLocation" : {
       "Description" : "The IP address range that can be used to SSH to the EC2 instances",
       "Type": "String",

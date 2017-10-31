@@ -1,8 +1,11 @@
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
   "Mappings" : {
-    "InstanceIDs" : {
-      "t2.micro" : "ami-1a7f6d7e"
+    "VPCRange" : {
+      "SubnetCidrs" : {
+        "PublicSubnet" : "10.0.1.0/24",
+        "PrivateSubnet" : "10.0.2.0/24"
+      }
     }
   },
   "Parameters" : {
@@ -36,7 +39,7 @@
         "SecurityGroups" : "PublicSecurityGroup",
         "KeyName" : "MyEC2KeyCloudForm",
         "InstanceType" : "t2.micro",
-        "ImageId" : { "Fn::FindInMap" : [ "InstanceIDs" , "t2.micro" ] },
+        "ImageId" : "ami-1a7f6d7e",
         "UserData" : { "Fn::Base64" : { "Fn::Join" : [ "", [
           "#!/bin/bash",
           "yum install httpd -y",
@@ -56,7 +59,7 @@
         "AvailabilityZone" : { "Fn::GetAtt" : [ "PrivateSubnet", "AvailabilityZone" ] },
         "KeyName" : "MyEC2KeyCloudForm",
         "InstanceType" : "t2.micro",
-        "ImageId" : { "Fn::FindInMap" : [ "InstanceIDs" , "t2.micro" ] },
+        "ImageId" : "ami-1a7f6d7e",
         "Tags" : [
         { "Key": "Name", "Value": "MySQLServer" }
       ]
@@ -82,9 +85,9 @@
         "GroupDescription": "Enable inbound network access to Public Instance.",
         "VpcId": { "Ref": "VPCID" },
         "SecurityGroupIngress": [
-          {"IpProtocol" : "tcp", "FromPort" : "3306", "ToPort" : "3306", "CidrIp" : "10.0.1.0/24"},
-          {"IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : "10.0.1.0/24"},
-          {"IpProtocol" : "icmp", "FromPort" : "0", "ToPort" : "65535", "CidrIp" : "10.0.1.0/24"}
+          {"IpProtocol" : "tcp", "FromPort" : "3306", "ToPort" : "3306", "CidrIp" : { "Fn::FindInMap" : [ "VPCRange", "SubnetCidrs", "PublicSubnet"] }},
+          {"IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : { "Fn::FindInMap" : [ "VPCRange", "SubnetCidrs", "PublicSubnet"] }},
+          {"IpProtocol" : "icmp", "FromPort" : "0", "ToPort" : "65535", "CidrIp" : { "Fn::FindInMap" : [ "VPCRange", "SubnetCidrs", "PublicSubnet"] }}
         ],
         "Tags" : [
           { "Key": "Name", "Value": { "Fn::Join" : ["", [{ "Ref" : "AWS::StackName" }, "-RDSSG"]] } }

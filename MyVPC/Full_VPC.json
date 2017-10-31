@@ -105,7 +105,7 @@
     "NetworkACL" : {
       "Type" : "AWS::EC2::NetworkAcl",
       "Properties" : {
-        "VpcId" : { "Ref" : "VPCID" },
+        "VpcId" : { "Ref" : "BaseVPC" },
       }
     },
     "NetACLSubnetAssoc" : {

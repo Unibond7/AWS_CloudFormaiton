@@ -35,7 +35,7 @@
     "PublicEC2Instance" :{
       "Type" : "AWS::EC2::Instance",
       "Properties" : {
-        "AvailabilityZone" : { "Fn::GetAtt" : [ "PublicSubnet", "AvailabilityZone" ] },
+        "AvailabilityZone" : { "Fn::Select": [ "0", { "Fn::GetAZs": { "Ref": "AWS::Region" } } ] },
         "SecurityGroups" : "PublicSecurityGroup",
         "KeyName" : "MyEC2KeyCloudForm",
         "InstanceType" : "t2.micro",
@@ -56,7 +56,7 @@
     "PrivateEC2Instance" :{
       "Type" : "AWS::EC2::Instance",
       "Properties" : {
-        "AvailabilityZone" : { "Fn::GetAtt" : [ "PrivateSubnet", "AvailabilityZone" ] },
+        "AvailabilityZone" : { "Fn::Select": [ "1", { "Fn::GetAZs": { "Ref": "AWS::Region" } } ] },
         "KeyName" : "MyEC2KeyCloudForm",
         "InstanceType" : "t2.micro",
         "ImageId" : "ami-1a7f6d7e",

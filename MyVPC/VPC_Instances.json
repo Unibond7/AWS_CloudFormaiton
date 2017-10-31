@@ -46,7 +46,7 @@
           "yum update -y\n",
           "service httpd start\n",
           "chkconfig httpd on\n",
-          "echo '<html><h1>Hello World!</h1></html>' > /var/www/html/index.html\n",
+          "echo '<html><h1>Hello World! This is Tim :)</h1></html>' > /var/www/html/index.html\n",
 	  "\n"
         ]]}},
         "Tags" : [
